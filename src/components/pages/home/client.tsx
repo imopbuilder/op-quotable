@@ -1,6 +1,7 @@
 'use client';
 
-import { useAppSelector } from '@/client/store';
+import { dispatch, useAppSelector } from '@/client/store';
+import { settag } from '@/client/store/slices/quote-slice';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -54,7 +55,7 @@ export function QuoteNavigation() {
 
 function TagSearch() {
 	const [open, setOpen] = useState(false);
-	const [value, setValue] = useState('');
+	const { tag: value } = useAppSelector((state) => state.quoteSlice);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen} modal={true}>
@@ -76,7 +77,7 @@ function TagSearch() {
 									value={tag.slug}
 									className='mx-1 rounded-md'
 									onSelect={(currentValue) => {
-										setValue(currentValue === value ? '' : currentValue);
+										dispatch(settag(currentValue === value ? '' : currentValue));
 										setOpen(false);
 									}}
 								>
