@@ -1,3 +1,4 @@
+import { QueryProvider } from '@/client/providers/query-provider';
 import ReduxProvider from '@/client/providers/redux-provider';
 import { ThemeProvider } from '@/client/providers/theme-provider';
 import '@/styles/main.scss';
@@ -21,7 +22,7 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<ReduxProvider>
 					<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-						{children}
+						<QueryProvider>{children}</QueryProvider>
 					</ThemeProvider>
 				</ReduxProvider>
 			</body>
