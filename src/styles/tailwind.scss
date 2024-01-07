@@ -111,6 +111,11 @@
 	body[style] {
 		margin-right: 0px !important;
 	}
+
+	.rounded-scroll-bar::-webkit-scrollbar-thumb {
+		border-radius: 8px;
+		border: 1px solid hsl(var(--background));
+	}
 }
 
 @layer base {
