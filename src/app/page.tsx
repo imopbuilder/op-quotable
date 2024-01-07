@@ -1,5 +1,6 @@
 import Footer from '@/components/global/footer';
 import Header from '@/components/global/header';
+import { Quote } from '@/components/pages/home/client';
 import { Fragment } from 'react';
 
 export default function Home() {
@@ -7,9 +8,11 @@ export default function Home() {
 		<Fragment>
 			<Header />
 			<main>
-				<div>
-					<p>Helloo world</p>
-				</div>
+				<section>
+					<div className='min-h-hvh max-w-maxi mx-auto px-[4%]'>
+						<Quote />
+					</div>
+				</section>
 			</main>
 			<Footer />
 		</Fragment>
