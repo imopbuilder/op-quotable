@@ -1,6 +1,14 @@
 'use client';
 
 import { useAppSelector } from '@/client/store';
+import { Button } from '@/components/ui/button';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { TAGS } from '@/constants/app';
+import { cn } from '@/lib/utils/cn';
+import { Check, ChevronLeft, ChevronRight, ChevronsUpDown } from 'lucide-react';
+import { useState } from 'react';
 
 export function Quote() {
 	const { quote } = useAppSelector((state) => state.quoteSlice);
@@ -23,5 +31,63 @@ export function Quote() {
 				</div>
 			</div>
 		</div>
+	);
+}
+
+export function QuoteNavigation() {
+	return (
+		<div className='sticky bottom-0 w-full flex items-center justify-center py-5 '>
+			<div className='bg-muted p-1 rounded-lg border flex items-center justify-center gap-2'>
+				<Button className='h-10 text-sm'>
+					<ChevronLeft className='mr-1.5' size={16} /> Previous
+				</Button>
+				<Button size='lg'>Inspire Me</Button>
+				<Button className='h-10'>
+					Next
+					<ChevronRight className='ml-1.5' size={16} />
+				</Button>
+				<TagSearch />
+			</div>
+		</div>
+	);
+}
+
+function TagSearch() {
+	const [open, setOpen] = useState(false);
+	const [value, setValue] = useState('');
+
+	return (
+		<Popover open={open} onOpenChange={setOpen} modal={true}>
+			<PopoverTrigger asChild>
+				<Button role='combobox' aria-expanded={open} className='w-[200px] justify-between h-10'>
+					{value ? TAGS.find((tag) => tag.slug === value)?.name : 'Select tag...'}
+					<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent className='w-[200px] p-0' sideOffset={10}>
+				<Command>
+					<CommandInput placeholder='Search tag...' />
+					<ScrollArea className='max-h-[450px] overflow-y-scroll rounded-scroll-bar'>
+						<CommandEmpty>No tag found.</CommandEmpty>
+						<CommandGroup>
+							{TAGS.map((tag) => (
+								<CommandItem
+									key={tag.slug}
+									value={tag.slug}
+									className='mx-1 rounded-md'
+									onSelect={(currentValue) => {
+										setValue(currentValue === value ? '' : currentValue);
+										setOpen(false);
+									}}
+								>
+									<Check className={cn('mr-2 h-4 w-4', value === tag.slug ? 'opacity-100' : 'opacity-0')} />
+									{tag.name}
+								</CommandItem>
+							))}
+						</CommandGroup>
+					</ScrollArea>
+				</Command>
+			</PopoverContent>
+		</Popover>
 	);
 }

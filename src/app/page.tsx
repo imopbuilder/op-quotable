@@ -1,6 +1,6 @@
 import Footer from '@/components/global/footer';
 import Header from '@/components/global/header';
-import { Quote } from '@/components/pages/home/client';
+import { Quote, QuoteNavigation } from '@/components/pages/home/client';
 import { Fragment } from 'react';
 
 export default function Home() {
@@ -13,6 +13,7 @@ export default function Home() {
 						<Quote />
 					</div>
 				</section>
+				<QuoteNavigation />
 			</main>
 			<Footer />
 		</Fragment>
