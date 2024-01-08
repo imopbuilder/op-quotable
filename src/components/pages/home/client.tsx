@@ -1,7 +1,7 @@
 'use client';
 
 import { dispatch, useAppSelector } from '@/client/store';
-import { settag } from '@/client/store/slices/quote-slice';
+import { setindex, settag } from '@/client/store/slices/quote-slice';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -12,8 +12,8 @@ import { Check, ChevronLeft, ChevronRight, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 
 export function Quote() {
-	const { quote } = useAppSelector((state) => state.quoteSlice);
-	const { content, author, tags } = quote;
+	const { quote, index } = useAppSelector((state) => state.quoteSlice);
+	const { content, author, tags } = quote[index];
 
 	return (
 		<div>
@@ -36,14 +36,24 @@ export function Quote() {
 }
 
 export function QuoteNavigation() {
+	const { quote, index } = useAppSelector((state) => state.quoteSlice);
+
+	function handlePrevious() {
+		dispatch(setindex('decrement'));
+	}
+
+	function handleNext() {
+		dispatch(setindex('increment'));
+	}
+
 	return (
 		<div className='sticky bottom-0 w-full flex items-center justify-center py-5 '>
 			<div className='bg-muted p-1 rounded-lg border flex items-center justify-center gap-2'>
-				<Button className='h-10 text-sm'>
+				<Button className='h-10 text-sm' onClick={handlePrevious} disabled={index === 0}>
 					<ChevronLeft className='mr-1.5' size={16} /> Previous
 				</Button>
 				<Button size='lg'>Inspire Me</Button>
-				<Button className='h-10'>
+				<Button className='h-10' onClick={handleNext} disabled={quote.length - 1 === index}>
 					Next
 					<ChevronRight className='ml-1.5' size={16} />
 				</Button>
