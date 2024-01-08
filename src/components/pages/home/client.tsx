@@ -1,15 +1,17 @@
 'use client';
 
+import { api } from '@/client/api';
 import { dispatch, useAppSelector } from '@/client/store';
-import { setindex, settag } from '@/client/store/slices/quote-slice';
+import { setindex, setquote, settag } from '@/client/store/slices/quote-slice';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { TAGS } from '@/constants/app';
+import { QUOTE, TAGS } from '@/constants/app';
 import { cn } from '@/lib/utils/cn';
 import { Check, ChevronLeft, ChevronRight, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 
 export function Quote() {
 	const { quote, index } = useAppSelector((state) => state.quoteSlice);
@@ -36,10 +38,30 @@ export function Quote() {
 }
 
 export function QuoteNavigation() {
+	const [loading, setLoading] = useState(false);
 	const { quote, index } = useAppSelector((state) => state.quoteSlice);
+	const query = useQuery(['quote'], api.getQuote, {
+		cacheTime: 0,
+		onSuccess: (data) => {
+			dispatch(setquote(data));
+			dispatch(setindex('increment'));
+		},
+		onError: (err) => {
+			console.log(err);
+		},
+		onSettled: () => {
+			setLoading(false);
+		},
+		initialData: [QUOTE],
+	});
 
 	function handlePrevious() {
 		dispatch(setindex('decrement'));
+	}
+
+	function handleInspiration() {
+		setLoading(true);
+		query.refetch();
 	}
 
 	function handleNext() {
@@ -52,7 +74,9 @@ export function QuoteNavigation() {
 				<Button className='h-10 text-sm' onClick={handlePrevious} disabled={index === 0}>
 					<ChevronLeft className='mr-1.5' size={16} /> Previous
 				</Button>
-				<Button size='lg'>Inspire Me</Button>
+				<Button size='lg' onClick={handleInspiration} disabled={loading}>
+					Inspire Me
+				</Button>
 				<Button className='h-10' onClick={handleNext} disabled={quote.length - 1 === index}>
 					Next
 					<ChevronRight className='ml-1.5' size={16} />

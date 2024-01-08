@@ -1,5 +1,5 @@
 export type Quote = {
-	id: string;
+	_id: string;
 	content: string;
 	author: string;
 	authorSlug: string;
@@ -8,7 +8,7 @@ export type Quote = {
 };
 
 export const QUOTE: Quote = {
-	id: 'KBk2VabfrRne',
+	_id: 'KBk2VabfrRne',
 	content: 'The possibilities are numerous once we decide to act and not react.',
 	author: 'George Bernard Shaw',
 	tags: ['Famous Quotes'],
