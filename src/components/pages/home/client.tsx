@@ -71,8 +71,8 @@ export function QuoteNavigation() {
 			dispatch(setquote(data));
 			dispatch(setindex('increment'));
 		},
-		onError: (err) => {
-			console.log(err);
+		onError: () => {
+			toast.error('Failed to fetch quote!');
 		},
 		onSettled: () => {
 			setLoading(false);
