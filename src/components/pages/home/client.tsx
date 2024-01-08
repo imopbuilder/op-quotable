@@ -9,20 +9,22 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { QUOTE, TAGS } from '@/constants/app';
 import { cn } from '@/lib/utils/cn';
+import { getAuthorProfileImageUrl } from '@/lib/utils/get-author-profile-image-url';
 import { Check, ChevronLeft, ChevronRight, ChevronsUpDown } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { toast } from 'sonner';
 
 export function Quote() {
 	const { quote, index } = useAppSelector((state) => state.quoteSlice);
-	const { content, author, tags } = quote[index];
+	const { author, content, tags, authorSlug } = quote[index];
 
 	return (
 		<div>
 			<p className='py-20 text-7xl/[1.4] font-bold bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-transparent'>{content}</p>
 			<hr />
-			<div className='flex items-center justify-between py-5 text-sm'>
+			<div className='flex items-center justify-between py-3 text-sm'>
 				<div>
 					{tags.map((tag) => (
 						<span key={tag} className='uppercase text-xs text-muted-foreground border rounded-lg py-1.5 px-2'>
@@ -31,7 +33,22 @@ export function Quote() {
 					))}
 				</div>
 				<div>
-					<p className='ext-muted-foreground font-semibold'>- {author}</p>
+					<div className='flex items-center justify-center gap-2.5'>
+						<div>
+							<Image
+								src={getAuthorProfileImageUrl(authorSlug)}
+								className='w-9 h-auto rounded-full'
+								width={100}
+								height={100}
+								alt='author'
+								loading='lazy'
+								unoptimized
+							/>
+						</div>
+						<div>
+							<p className='ext-muted-foreground font-semibold'>{author}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
