@@ -1,3 +1,4 @@
+import { getQuoteTag } from '@/lib/utils/get-quote-url';
 import axios, { AxiosError } from 'axios';
 import z from 'zod';
 import { quoteApi } from './axios';
@@ -14,9 +15,11 @@ const getQuoteResponseSchema = z.array(
 );
 
 export const api = {
-	getQuote: async () => {
+	getQuote: async (tag: string) => {
+		const URL = `/quotes/random?minLength=5&maxLength=190${getQuoteTag(tag)}`;
+
 		try {
-			const val = await quoteApi.get('/quotes/random?minLength=30&maxLength=110');
+			const val = await quoteApi.get(URL);
 			const res = getQuoteResponseSchema.parse(val.data);
 			return res;
 		} catch (err) {

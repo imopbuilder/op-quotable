@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils/cn';
 import { Check, ChevronLeft, ChevronRight, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
+import { toast } from 'sonner';
 
 export function Quote() {
 	const { quote, index } = useAppSelector((state) => state.quoteSlice);
@@ -39,10 +40,17 @@ export function Quote() {
 
 export function QuoteNavigation() {
 	const [loading, setLoading] = useState(false);
-	const { quote, index } = useAppSelector((state) => state.quoteSlice);
-	const query = useQuery(['quote'], api.getQuote, {
+	const { quote, index, tag } = useAppSelector((state) => state.quoteSlice);
+
+	const query = useQuery(['quote'], () => api.getQuote(tag), {
 		cacheTime: 0,
 		onSuccess: (data) => {
+			if (data.length === 0) {
+				// toast for empty quote array
+				toast.info(`No Quote on ${TAGS.find((val) => val.slug === tag)?.name}`);
+				return;
+			}
+
 			dispatch(setquote(data));
 			dispatch(setindex('increment'));
 		},
