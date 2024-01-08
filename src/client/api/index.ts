@@ -16,7 +16,7 @@ const getQuoteResponseSchema = z.array(
 export const api = {
 	getQuote: async () => {
 		try {
-			const val = await quoteApi.get('/quotes/random');
+			const val = await quoteApi.get('/quotes/random?minLength=30&maxLength=110');
 			const res = getQuoteResponseSchema.parse(val.data);
 			return res;
 		} catch (err) {
