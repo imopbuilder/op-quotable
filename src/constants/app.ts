@@ -31,12 +31,6 @@ export const TAGS: Tags[] = [
 		quoteCount: 1,
 	},
 	{
-		id: 'qTFouZDPBZz',
-		name: 'Athletics',
-		slug: 'athletics',
-		quoteCount: 0,
-	},
-	{
 		id: 'M83oc3scg',
 		name: 'Business',
 		slug: 'business',
@@ -287,12 +281,6 @@ export const TAGS: Tags[] = [
 		name: 'Power Quotes',
 		slug: 'power-quotes',
 		quoteCount: 2,
-	},
-	{
-		id: 'p5xRCWCdU',
-		name: 'Proverb',
-		slug: 'proverb',
-		quoteCount: 0,
 	},
 	{
 		id: 'tWLCsyf_K',
